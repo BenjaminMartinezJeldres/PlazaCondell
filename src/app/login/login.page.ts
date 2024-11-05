@@ -1,4 +1,5 @@
 // src/app/login/login.page.ts
+
 import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
@@ -15,21 +16,19 @@ export class LoginPage {
   constructor(private authService: AuthService, private router: Router) {}
 
   login() {
-    this.authService.login(this.email, this.password).then((userCredential) => {
-      const userId = userCredential.user?.uid;
-      if (userId) {
-        this.authService.getUserRole(userId).subscribe((role) => {
-          if (role === 'admin') {
-            this.router.navigate(['/admin-dashboard']);
-          } else if (role === 'cliente') {
-            this.router.navigate(['/cliente-dashboard']);
-          } else {
-            console.log('Rol desconocido');
-          }
-        });
-      }
-    }).catch(error => {
-      console.error('Error al iniciar sesión:', error);
-    });
+    this.authService.login(this.email, this.password)
+      .then(() => {
+        this.router.navigate(['/home']); // Redirigir al usuario después de iniciar sesión
+      })
+      .catch(error => {
+        alert('Error al iniciar sesión: ' + error.message);
+      });
+  }
+
+  // Método para restablecer la contraseña
+  resetPassword() {
+    this.authService.resetPassword(this.email)
+      .then(() => alert('Se ha enviado un correo de restablecimiento de contraseña'))
+      .catch(error => alert('Error al enviar correo de restablecimiento: ' + error.message));
   }
 }

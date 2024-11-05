@@ -2,18 +2,18 @@
   <ion-toolbar>
     <ion-title>Inicio</ion-title>
     <ion-buttons slot="end">
-      <ion-button routerLink="/login">Iniciar Sesión</ion-button>
-      <ion-button routerLink="/register">Registrar Cuenta</ion-button>
+      <ion-button *ngIf="!isLoggedIn" routerLink="/login">Iniciar Sesión</ion-button>
+      <ion-button *ngIf="isLoggedIn && isAdmin" routerLink="/register">Registrar Usuario</ion-button>
+      <ion-button *ngIf="isLoggedIn" (click)="authService.logout()">Cerrar Sesión</ion-button>
+      <ion-button *ngIf="isAdmin" routerLink="/users">Gestión de Usuarios</ion-button>
+
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div class="welcome-section">
-    <h1>Bienvenido a Comunidad Plaza Condell </h1>
+    <h1>Bienvenido a la Comunidad Plaza Condell</h1>
     <p>Seleccione una opción para continuar:</p>
   </div>
-
-
-  <!-- Aquí puedes agregar más secciones o contenido adicional -->
 </ion-content>

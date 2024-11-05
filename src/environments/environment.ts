@@ -2,13 +2,13 @@
 export const environment = {
   production: false,
   firebaseConfig: {
-    apiKey: "AIzaSyDzIfyULC_lFCZ-Bdjm2GjKfCTWjsx61vo",
-    authDomain: "junta-vecinal-plaza-condell.firebaseapp.com",
-    databaseURL: "https://junta-vecinal-plaza-condell-default-rtdb.firebaseio.com",
-    projectId: "junta-vecinal-plaza-condell",
-    storageBucket: "junta-vecinal-plaza-condell.appspot.com",
-    messagingSenderId: "54877265828",
-    appId: "1:54877265828:web:569e5f25f8e9963a982b31",
-    measurementId: "G-1T8N8NDQGL"
+    apiKey: "AIzaSyA_b2Z17AU50AVro-9TYTQVsVvZ3he-o6Q",
+    authDomain: "plazacondell-fb41b.firebaseapp.com",
+    databaseURL: "https://plazacondell-fb41b-default-rtdb.firebaseio.com",
+    projectId: "plazacondell-fb41b",
+    storageBucket: "plazacondell-fb41b.firebasestorage.app",
+    messagingSenderId: "242126954324",
+    appId: "1:242126954324:web:0843ae6a2862dda1d272c1",
+    measurementId: "G-107TCMV4VT"
   }
 };
