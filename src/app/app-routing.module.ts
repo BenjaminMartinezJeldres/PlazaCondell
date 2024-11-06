@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { CertificadoComponent } from './components/certificado/certificado.component'; // Importa el componente aquí
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home', // Redirige a la página de inicio
+    redirectTo: 'home',
     pathMatch: 'full'
   },
   {
@@ -16,7 +17,7 @@ const routes: Routes = [
     loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule)
   },
   {
-    path: 'register', // Ruta para la página de registro
+    path: 'register',
     loadChildren: () => import('./register/register.module').then(m => m.RegisterPageModule)
   },
   {
@@ -28,12 +29,12 @@ const routes: Routes = [
     loadChildren: () => import('./cliente-dashboard/cliente-dashboard.module').then(m => m.ClienteDashboardPageModule)
   },
   {
-    path: 'register',
-    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
+    path: 'users',
+    loadChildren: () => import('./users/users.module').then(m => m.UsersPageModule)
   },
   {
-    path: 'users',
-    loadChildren: () => import('./users/users.module').then( m => m.UsersPageModule)
+    path: 'certificado', // Nueva ruta
+    component: CertificadoComponent // Usa el componente aquí sin un módulo adicional
   }
 ];
 

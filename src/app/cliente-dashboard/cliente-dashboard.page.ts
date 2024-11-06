@@ -1,15 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+// src/app/cliente-dashboard/cliente-dashboard.page.ts
+import { Component } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { CertificadoComponent } from '../components/certificado/certificado.component';
 
 @Component({
   selector: 'app-cliente-dashboard',
   templateUrl: './cliente-dashboard.page.html',
   styleUrls: ['./cliente-dashboard.page.scss'],
 })
-export class ClienteDashboardPage implements OnInit {
+export class ClienteDashboardPage {
 
-  constructor() { }
+  constructor(private modalController: ModalController) {}
 
-  ngOnInit() {
+  async verCertificado() {
+    const modal = await this.modalController.create({
+      component: CertificadoComponent,
+    });
+    await modal.present();
   }
-
 }
