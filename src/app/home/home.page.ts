@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class HomePage implements OnInit {
   isLoggedIn = false;
   isAdmin = false;
-  isCliente = false; // Nueva variable para identificar al cliente
+  isCliente = false;
 
   constructor(public authService: AuthService, private router: Router) {}
 
@@ -20,7 +20,7 @@ export class HomePage implements OnInit {
         this.isLoggedIn = true;
         this.authService.getUserRole(user.uid).subscribe(role => {
           this.isAdmin = (role === 'admin');
-          this.isCliente = (role === 'cliente'); // Identifica al cliente
+          this.isCliente = (role === 'cliente');
         });
       } else {
         this.isLoggedIn = false;
@@ -39,6 +39,7 @@ export class HomePage implements OnInit {
       this.isLoggedIn = false;
       this.isAdmin = false;
       this.isCliente = false;
+      this.router.navigate(['/home']);
     });
   }
 }

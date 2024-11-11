@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class RegisterPage {
   email: string = '';
   password: string = '';
+  name:string='';
   role: string = 'cliente'; // O 'admin', según tu diseño
 
   constructor(private authService: AuthService, private router: Router) {}

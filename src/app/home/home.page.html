@@ -14,6 +14,11 @@
   <div class="welcome-section">
     <h1>Bienvenido a la Comunidad Plaza Condell</h1>
     <p>Seleccione una opción para continuar:</p>
+
+    <!-- Botón para descargar el certificado (solo visible para clientes) -->
+    <ion-button *ngIf="isCliente" expand="full" routerLink="/certificado">Descargar Certificado</ion-button>
+
+    <!-- Botón para reservar el gimnasio (solo visible para clientes) -->
+    <ion-button *ngIf="isCliente" expand="full" routerLink="/gym-reservation">Reservar Gimnasio</ion-button>
   </div>
-  <ion-button *ngIf="isCliente" expand="full" (click)="verCertificado()">Descargar Certificado</ion-button>
 </ion-content>

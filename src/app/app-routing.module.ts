@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { CertificadoComponent } from './components/certificado/certificado.component'; // Importa el componente aquí
+import { CertificadoComponent } from './components/certificado/certificado.component';
 
 const routes: Routes = [
   {
@@ -33,9 +33,15 @@ const routes: Routes = [
     loadChildren: () => import('./users/users.module').then(m => m.UsersPageModule)
   },
   {
-    path: 'certificado', // Nueva ruta
-    component: CertificadoComponent // Usa el componente aquí sin un módulo adicional
+    path: 'certificado',
+    component: CertificadoComponent
+  },
+  {
+    path: 'gym-reservation',
+    loadChildren: () => import('./components/gym-reservation/gym-reservation.module').then(m => m.GymReservationPageModule)
   }
+  
+
 ];
 
 @NgModule({
@@ -44,4 +50,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

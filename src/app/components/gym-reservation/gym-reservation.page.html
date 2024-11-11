@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Reservar Gimnasio</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="reservation-section">
+    <h2>Seleccione la fecha para reservar:</h2>
+
+    <!-- Selector de fecha -->
+    <ion-item>
+      <ion-label>Fecha</ion-label>
+      <ion-datetime
+        [min]="minDate"
+        (ionChange)="onDateChange($event)"
+        [highlightedDates]="highlightedDates">
+      </ion-datetime>
+    </ion-item>
+
+    <!-- Botón para reservar -->
+    <ion-button expand="full" (click)="reservar()">RESERVAR</ion-button>
+  </div>
+
+  <!-- Sección con scroll para las reservas -->
+  <div class="reservations-list" style="max-height: 400px; overflow-y: scroll;">
+    <h2>Reservas:</h2>
+    <ion-list>
+      <ion-item *ngFor="let reserva of reservationsList">
+        <ion-label>
+          <p>Fecha: {{ reserva.date }}</p>
+          <p>Cliente: {{ reserva.user || 'Sin información' }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
