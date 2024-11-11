@@ -19,8 +19,12 @@ export class GymReservationPage implements OnInit {
   highlightedDates: { date: string, color: string }[] = [];
   reservationsList: Reserva[] = [];
   currentUserEmail: string | null = null;
+  maxReservationsPerWeek = 1;
 
-  constructor(private firestore: AngularFirestore, private authService: AuthService) {
+  constructor(
+    private firestore: AngularFirestore,
+    private authService: AuthService
+  ) {
     this.minDate = new Date().toISOString().split('T')[0];
   }
 
@@ -38,20 +42,12 @@ export class GymReservationPage implements OnInit {
     if (snapshot && !snapshot.empty) {
       this.highlightedDates = snapshot.docs.map(doc => {
         const data = doc.data() as Reserva;
-        return {
-          date: data.date,
-          color: 'red'
-        };
+        return { date: data.date, color: 'red' };
       });
 
-      // Cargar lista de reservas
       this.reservationsList = snapshot.docs.map(doc => {
         const data = doc.data() as Reserva;
-        return {
-          id: doc.id,
-          date: data.date,
-          user: data.user
-        };
+        return { id: doc.id, date: data.date, user: data.user };
       });
     }
   }
@@ -62,13 +58,16 @@ export class GymReservationPage implements OnInit {
       return;
     }
 
-    const isReserved = this.highlightedDates.some(d => d.date === this.selectedDate);
-    if (isReserved) {
-      alert('Esta fecha ya está reservada.');
+    if (await this.isDateReserved(this.selectedDate)) {
+      alert('Esta fecha ya está reservada. Selecciona otra fecha.');
       return;
     }
 
-    // Guardar la reserva en Firestore
+    if (await this.hasReachedWeeklyLimit()) {
+      alert('Ya has alcanzado el límite de reservas para esta semana.');
+      return;
+    }
+
     try {
       await this.firestore.collection('reservas').add({
         date: this.selectedDate,
@@ -76,6 +75,7 @@ export class GymReservationPage implements OnInit {
       });
       alert('¡Reserva realizada con éxito!');
       this.loadReservedDates();
+      this.selectedDate = '';
     } catch (err) {
       console.error('Error al reservar:', err);
     }
@@ -92,10 +92,47 @@ export class GymReservationPage implements OnInit {
   }
 
   onDateChange(event: any) {
-    this.selectedDate = event.detail.value;
+    const selected = event.detail.value;
+    this.selectedDate = selected;
   }
 
-  isDateDisabled(date: string): boolean {
-    return this.highlightedDates.some(d => d.date === date);
+  async isDateReserved(date: string): Promise<boolean> {
+    const snapshot = await this.firestore.collection('reservas', ref =>
+      ref.where('date', '==', date)
+    ).get().toPromise();
+
+    // Verifica si snapshot no es undefined antes de acceder a size
+    return snapshot?.size ? snapshot.size > 0 : false;
+  }
+
+  async hasReachedWeeklyLimit(): Promise<boolean> {
+    if (!this.currentUserEmail) return false;
+
+    const startOfWeek = this.getStartOfWeek(new Date());
+    const endOfWeek = this.getEndOfWeek(new Date());
+
+    const snapshot = await this.firestore.collection('reservas', ref =>
+      ref
+        .where('user', '==', this.currentUserEmail)
+        .where('date', '>=', startOfWeek)
+        .where('date', '<=', endOfWeek)
+    ).get().toPromise();
+
+    // Verifica si snapshot no es undefined antes de acceder a size
+    return snapshot?.size ? snapshot.size >= this.maxReservationsPerWeek : false;
+  }
+
+  getStartOfWeek(date: Date): string {
+    const day = date.getDay();
+    const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+    const startDate = new Date(date.setDate(diff));
+    return startDate.toISOString().split('T')[0];
+  }
+
+  getEndOfWeek(date: Date): string {
+    const day = date.getDay();
+    const diff = date.getDate() + (7 - day);
+    const endDate = new Date(date.setDate(diff));
+    return endDate.toISOString().split('T')[0];
   }
 }

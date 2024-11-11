@@ -14,7 +14,8 @@
       <ion-datetime
         [min]="minDate"
         (ionChange)="onDateChange($event)"
-        [highlightedDates]="highlightedDates">
+        [highlightedDates]="highlightedDates"
+        presentation="date">
       </ion-datetime>
     </ion-item>
 
@@ -27,10 +28,15 @@
     <h2>Reservas:</h2>
     <ion-list>
       <ion-item *ngFor="let reserva of reservationsList">
-        <ion-label>
-          <p>Fecha: {{ reserva.date }}</p>
-          <p>Cliente: {{ reserva.user || 'Sin información' }}</p>
+        <ion-label class="reservation-label">
+          <p class="reservation-date">{{ reserva.date.split('T')[0] }}</p>
+          <p class="reservation-user">Cliente: {{ reserva.user || 'Sin información' }}</p>
         </ion-label>
+        <ion-button *ngIf="reserva.user === currentUserEmail && reserva.id"
+                    (click)="cancelarReserva(reserva.id!)" 
+                    color="danger" fill="solid" shape="round" size="small">
+          Cancelar
+        </ion-button>
       </ion-item>
     </ion-list>
   </div>
