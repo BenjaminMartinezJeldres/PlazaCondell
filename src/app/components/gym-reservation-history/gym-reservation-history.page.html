@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Historial de Reservas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="history-section">
+    <h2>Reservas Realizadas</h2>
+
+    <!-- Lista de reservas -->
+    <ion-list>
+      <ion-item *ngFor="let reserva of reservations$ | async">
+        <ion-label class="reservation-label">
+          <p class="reservation-date">{{ reserva.date.split('T')[0] }}</p>
+          <p class="reservation-user">Cliente: {{ reserva.user || 'Sin información' }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

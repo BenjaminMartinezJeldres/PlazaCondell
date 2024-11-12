@@ -19,7 +19,7 @@ export class GymReservationPage implements OnInit {
   highlightedDates: { date: string, color: string }[] = [];
   reservationsList: Reserva[] = [];
   currentUserEmail: string | null = null;
-  maxReservationsPerWeek = 1;
+  maxReservationsPerMonth = 1;
 
   constructor(
     private firestore: AngularFirestore,
@@ -58,13 +58,15 @@ export class GymReservationPage implements OnInit {
       return;
     }
 
+    // Verificar si la fecha ya está reservada por otro usuario
     if (await this.isDateReserved(this.selectedDate)) {
       alert('Esta fecha ya está reservada. Selecciona otra fecha.');
       return;
     }
 
-    if (await this.hasReachedWeeklyLimit()) {
-      alert('Ya has alcanzado el límite de reservas para esta semana.');
+    // Verificar si el usuario ha alcanzado el límite mensual
+    if (await this.hasReachedMonthlyLimit()) {
+      alert('Ya has alcanzado el límite de reservas para este mes.');
       return;
     }
 
@@ -101,38 +103,22 @@ export class GymReservationPage implements OnInit {
       ref.where('date', '==', date)
     ).get().toPromise();
 
-    // Verifica si snapshot no es undefined antes de acceder a size
-    return snapshot?.size ? snapshot.size > 0 : false;
+    // Verificación mejorada para asegurarse de que siempre devuelva un booleano
+    return snapshot?.empty === false;
   }
 
-  async hasReachedWeeklyLimit(): Promise<boolean> {
+  async hasReachedMonthlyLimit(): Promise<boolean> {
     if (!this.currentUserEmail) return false;
 
-    const startOfWeek = this.getStartOfWeek(new Date());
-    const endOfWeek = this.getEndOfWeek(new Date());
+    const currentMonth = new Date().toISOString().split('-').slice(0, 2).join('-');
 
     const snapshot = await this.firestore.collection('reservas', ref =>
       ref
         .where('user', '==', this.currentUserEmail)
-        .where('date', '>=', startOfWeek)
-        .where('date', '<=', endOfWeek)
+        .where('date', '>=', `${currentMonth}-01`)
+        .where('date', '<=', `${currentMonth}-31`)
     ).get().toPromise();
 
-    // Verifica si snapshot no es undefined antes de acceder a size
-    return snapshot?.size ? snapshot.size >= this.maxReservationsPerWeek : false;
-  }
-
-  getStartOfWeek(date: Date): string {
-    const day = date.getDay();
-    const diff = date.getDate() - day + (day === 0 ? -6 : 1);
-    const startDate = new Date(date.setDate(diff));
-    return startDate.toISOString().split('T')[0];
-  }
-
-  getEndOfWeek(date: Date): string {
-    const day = date.getDay();
-    const diff = date.getDate() + (7 - day);
-    const endDate = new Date(date.setDate(diff));
-    return endDate.toISOString().split('T')[0];
+    return snapshot?.size ? snapshot.size >= this.maxReservationsPerMonth : false;
   }
 }

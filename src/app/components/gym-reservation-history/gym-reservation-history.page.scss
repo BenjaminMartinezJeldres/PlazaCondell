@@ -1,0 +1,21 @@
+.reservation-section {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+  }
+  
+  .calendar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  ion-datetime {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  

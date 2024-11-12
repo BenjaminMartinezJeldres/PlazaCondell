@@ -4,8 +4,8 @@
     <ion-buttons slot="end">
       <ion-button *ngIf="!isLoggedIn" routerLink="/login">Iniciar Sesión</ion-button>
       <ion-button *ngIf="isLoggedIn && isAdmin" routerLink="/register">Registrar Usuario</ion-button>
-      <ion-button *ngIf="isLoggedIn" (click)="logout()">Cerrar Sesión</ion-button>
       <ion-button *ngIf="isAdmin" routerLink="/users">Gestión de Usuarios</ion-button>
+      <ion-button *ngIf="isLoggedIn" (click)="logout()">Cerrar Sesión</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

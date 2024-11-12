@@ -10,7 +10,6 @@
 
     <!-- Selector de fecha -->
     <ion-item>
-      <ion-label>Fecha</ion-label>
       <ion-datetime
         [min]="minDate"
         (ionChange)="onDateChange($event)"
@@ -23,7 +22,7 @@
     <ion-button expand="full" (click)="reservar()">RESERVAR</ion-button>
   </div>
 
-  <!-- Sección con scroll para las reservas -->
+  <!-- Lista de reservas con scroll -->
   <div class="reservations-list" style="max-height: 400px; overflow-y: scroll;">
     <h2>Reservas:</h2>
     <ion-list>
