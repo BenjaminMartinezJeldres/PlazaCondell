@@ -1,4 +1,3 @@
-// certificado.component.ts
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -8,7 +7,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./certificado.component.scss']
 })
 export class CertificadoComponent {
-
   constructor(private router: Router) {}
 
   downloadCertificado() {

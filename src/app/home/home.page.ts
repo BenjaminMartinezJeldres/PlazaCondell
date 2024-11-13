@@ -23,11 +23,16 @@ export class HomePage implements OnInit {
           this.isCliente = (role === 'cliente');
         });
       } else {
-        this.isLoggedIn = false;
-        this.isAdmin = false;
-        this.isCliente = false;
+        this.resetRoles();
+        this.router.navigate(['/home']);
       }
     });
+  }
+
+  resetRoles() {
+    this.isLoggedIn = false;
+    this.isAdmin = false;
+    this.isCliente = false;
   }
 
   verCertificado() {
@@ -36,9 +41,7 @@ export class HomePage implements OnInit {
 
   logout() {
     this.authService.logout().then(() => {
-      this.isLoggedIn = false;
-      this.isAdmin = false;
-      this.isCliente = false;
+      this.resetRoles();
       this.router.navigate(['/home']);
     });
   }
